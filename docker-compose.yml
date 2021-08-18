@@ -1,0 +1,51 @@
+version: '3.1'
+services:
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8081:80
+    networks:
+      - webnet
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=rpg
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=rpg
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-vol:/var/lib/mysql
+    networks:
+      - webnet
+
+  rpg-server:
+    container_name: rpg-server
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '5000:5000'
+      - '9229:9229'
+    command: yarn start:debug
+    environment:
+      - MYSQL_HOST=localhost
+      - MYSQL_PORT=3306
+      - MYSQL_DB=rpg
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password123
+    links:
+      - db
+    networks:
+      - webnet
+
+networks:
+  webnet:
+volumes:
+  db-vol:
