@@ -35,11 +35,11 @@ services:
       - '9229:9229'
     command: yarn start:debug
     environment:
-      - MYSQL_HOST=localhost
+      - MYSQL_HOST=db
       - MYSQL_PORT=3306
       - MYSQL_DB=rpg
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=password123
+      - MYSQL_PASSWORD=root
     links:
       - db
     networks:
