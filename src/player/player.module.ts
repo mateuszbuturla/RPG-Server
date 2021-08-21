@@ -1,5 +1,6 @@
 import * as socketio from 'socket.io';
 import { Player } from './player.class';
+import { IPlayerKeyPressData, IPlayerRes } from '../types/player';
 
 export class PlayerModule {
   io: socketio.Server;
@@ -14,12 +15,12 @@ export class PlayerModule {
   }
 
   init(): void {
-    this.socket.on('keyPress', (data: any) => {
+    this.socket.on('keyPress', (data: IPlayerKeyPressData) => {
       this.player.onKeyPress(data);
     });
 
     setInterval(() => {
-      let pack: any[] = [];
+      let pack: IPlayerRes[] = [];
       Object.keys((global as any).playerList).forEach(function (key) {
         const player = (global as any).playerList[key];
         pack.push({

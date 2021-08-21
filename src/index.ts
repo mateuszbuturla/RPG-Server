@@ -3,6 +3,7 @@ import * as http from 'http';
 import * as socketio from 'socket.io';
 import { Player } from './player/player.class';
 import { PlayerModule } from './player/player.module';
+import { IPlayerData } from './types/player';
 
 const port: number = parseInt(process.env.PORT || '3000', 10);
 const dev: boolean = process.env.NODE_ENV !== 'production';
@@ -29,7 +30,6 @@ io.on('connection', (socket: socketio.Socket) => {
 
   (global as any).socketList[socket.id] = socket;
   (global as any).playerList[socket.id] = player;
-
   const playerModule = new PlayerModule(io, socket, player);
 
   socket.on('disconnect', function () {
