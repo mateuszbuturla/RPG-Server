@@ -5,11 +5,11 @@ export class Entity {
   spdX: number = 0;
   spdY: number = 0;
   maxSpd: number = 1;
-  
+
   update(): void {
     this.updatePosition();
   }
-  
+
   updatePosition(): void {
     this.x += this.spdX;
     this.y += this.spdY;

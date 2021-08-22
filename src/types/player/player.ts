@@ -1,4 +1,6 @@
 import { Player } from '../../player/player.class';
+import { AnimationType } from '../common/animation';
+import { IMoveDirection, IPosition } from '../common/common';
 
 export interface IPlayerKeyPressData {
   inputId: 'right' | 'left' | 'up' | 'down';
@@ -7,8 +9,8 @@ export interface IPlayerKeyPressData {
 
 export interface IPlayerRes {
   id: string;
-  x: number;
-  y: number;
+  position: IPosition;
+  moveDirection: IMoveDirection;
 }
 
 export interface IPlayerData {
