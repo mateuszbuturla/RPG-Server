@@ -18,6 +18,9 @@ export class PlayerModule {
     this.socket.on('keyPress', (data: IPlayerKeyPressData) => {
       this.player.onKeyPress(data);
     });
+    this.socket.on('keyRelese', (data: IPlayerKeyPressData) => {
+      this.player.onKeyPress(data);
+    });
 
     setInterval(() => {
       let pack: IPlayerRes[] = [];
@@ -25,8 +28,11 @@ export class PlayerModule {
         const player = (global as any).playerList[key];
         pack.push({
           id: player.socket.id,
-          x: player.x,
-          y: player.y,
+          position: {
+            x: player.x,
+            y: player.y,
+          },
+          moveDirection: player.moveDirection,
         });
       });
       this.io.emit('newPositions', { players: pack });
