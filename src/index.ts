@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as socketio from 'socket.io';
 import { Player } from './player/player.class';
 import { PlayerModule } from './player/player.module';
-import { IPlayerData } from './types/player';
+import { IPlayerData, IPlayerRes } from './types/player';
 
 const port: number = parseInt(process.env.PORT || '3000', 10);
 const dev: boolean = process.env.NODE_ENV !== 'production';
@@ -21,22 +21,38 @@ io.attach(server, {
   },
 });
 
-(global as any).playerList = {};
-(global as any).socketList = {};
+let playerList: any = {};
+let socketList: any = {};
 
 io.on('connection', (socket: socketio.Socket) => {
   console.log('New player connected');
-  const player = new Player(socket);
+  const player = new Player(socket.id);
 
-  (global as any).socketList[socket.id] = socket;
-  (global as any).playerList[socket.id] = player;
+  socketList[socket.id] = socket;
+  playerList[socket.id] = player;
   const playerModule = new PlayerModule(io, socket, player);
 
   socket.on('disconnect', function () {
-    delete (global as any).socketList[socket.id];
-    delete (global as any).playerList[socket.id];
+    delete socketList[socket.id];
+    delete playerList[socket.id];
   });
 });
+
+setInterval(() => {
+  let pack: IPlayerRes[] = [];
+  Object.keys(playerList).forEach(function (key) {
+    const player = playerList[key];
+    pack.push({
+      id: player.id,
+      position: {
+        x: player.x,
+        y: player.y,
+      },
+      moveDirection: player.moveDirection,
+    });
+  });
+  io.emit('newPositions', { players: pack });
+}, 1000 / 30);
 
 server.listen(port, () => {
   console.log(`> Ready on http://localhost:${port}`);
