@@ -5,16 +5,15 @@ import { IMoveDirection } from '../types/common/common';
 import { IPlayerKeyPressData } from '../types/player';
 
 export class Player extends Entity {
-  socket: socketio.Socket;
   pressingRight: boolean = false;
   pressingLeft: boolean = false;
   pressingUp: boolean = false;
   pressingDown: boolean = false;
   moveDirection: IMoveDirection = { x: 0, y: 0 };
 
-  constructor(socket: socketio.Socket) {
+  constructor(id: string) {
     super();
-    this.socket = socket;
+    this.id = id;
   }
 
   onKeyPress(data: IPlayerKeyPressData): void {
@@ -55,10 +54,8 @@ export class Player extends Entity {
 
   updateMoveDirection(data: IPlayerKeyPressData): void {
     if (data.inputId === 'left') this.moveDirection.x = data.state ? -1 : 0;
-    else if (data.inputId === 'right')
-      this.moveDirection.x = data.state ? 1 : 0;
-    else if (data.inputId === 'up') this.moveDirection.y = data.state ? 1 : 0;
-    else if (data.inputId === 'down')
-      this.moveDirection.y = data.state ? -1 : 0;
+    if (data.inputId === 'right') this.moveDirection.x = data.state ? 1 : 0;
+    if (data.inputId === 'up') this.moveDirection.y = data.state ? 1 : 0;
+    if (data.inputId === 'down') this.moveDirection.y = data.state ? -1 : 0;
   }
 }
