@@ -49,8 +49,10 @@ setInterval(() => {
         y: player.y,
       },
       moveDirection: player.moveDirection,
+      health: player.health,
     });
   });
+  // console.log(pack);
   io.emit('newPositions', { players: pack });
 }, 1000 / 30);
 
