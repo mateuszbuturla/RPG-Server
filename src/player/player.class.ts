@@ -12,8 +12,7 @@ export class Player extends Entity {
   moveDirection: IMoveDirection = { x: 0, y: 0 };
 
   constructor(id: string) {
-    super();
-    this.id = id;
+    super(id);
   }
 
   onKeyPress(data: IPlayerKeyPressData): void {

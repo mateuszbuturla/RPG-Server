@@ -21,5 +21,8 @@ export class PlayerModule {
     this.socket.on('keyRelese', (data: IPlayerKeyPressData) => {
       this.player.onKeyPress(data);
     });
+    this.socket.on('takeDamage', (data: number) => {
+      this.player.onDamageTaken(data);
+    });
   }
 }
