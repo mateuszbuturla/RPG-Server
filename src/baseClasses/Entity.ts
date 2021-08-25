@@ -23,7 +23,6 @@ export class Entity {
   }
 
   onDamageTaken(damage: number): void {
-    console.log('test22');
     this.health -= damage;
   }
 }

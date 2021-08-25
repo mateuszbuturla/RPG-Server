@@ -50,6 +50,7 @@ setInterval(() => {
       },
       moveDirection: player.moveDirection,
       health: player.health,
+      maxHealth: player.maxHealth,
     });
   });
   // console.log(pack);

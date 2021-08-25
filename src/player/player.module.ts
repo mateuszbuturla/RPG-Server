@@ -22,7 +22,6 @@ export class PlayerModule {
       this.player.onKeyPress(data);
     });
     this.socket.on('takeDamage', (data: number) => {
-      console.log('test');
       this.player.onDamageTaken(data);
     });
   }
