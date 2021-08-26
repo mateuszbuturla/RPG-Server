@@ -11,6 +11,8 @@ export interface IPlayerRes {
   id: string;
   position: IPosition;
   moveDirection: IMoveDirection;
+  health: number;
+  maxHealth: number;
 }
 
 export interface IPlayerData {

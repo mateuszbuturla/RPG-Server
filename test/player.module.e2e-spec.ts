@@ -1,7 +1,10 @@
+import { IPlayerRes } from './../src/types/player/player';
 import { io, Socket } from 'socket.io-client';
+import { Player } from '../src/player/player.class';
 
 describe('player module e2e test', function () {
   let socket: Socket;
+  let thisPlayer: any;
 
   beforeEach((done: any) => {
     socket = io('http://localhost:3000');
@@ -26,6 +29,9 @@ describe('player module e2e test', function () {
 
   test('should return position of all players', (done) => {
     socket.on('newPositions', (arg) => {
+      thisPlayer = arg.players.find(
+        (player: IPlayerRes) => player.id === socket.id,
+      );
       expect(arg).toEqual(
         expect.objectContaining({
           players: expect.arrayContaining([
@@ -42,6 +48,21 @@ describe('player module e2e test', function () {
             }),
           ]),
         }),
+      );
+      done();
+    });
+  });
+
+  test('should decrease health by 10', (done) => {
+    const damage = 10;
+    const testPlayer = new Player('test2');
+    socket.emit('takeDamage', damage);
+    socket.on('newPositions', (arg) => {
+      thisPlayer = arg.players.find(
+        (player: IPlayerRes) => player.id === socket.id,
+      );
+      expect(thisPlayer).toEqual(
+        expect.objectContaining({ health: testPlayer.health - damage }),
       );
       done();
     });
